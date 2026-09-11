@@ -1,121 +1,85 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 
+const initialResponse = {
+  status: 'Sin ejecutar',
+  body: 'Elegir una accion para llamar al backend por medio del proxy.',
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [response, setResponse] = useState(initialResponse)
+  const [loading, setLoading] = useState(false)
+
+  async function callProxy(path) {
+    setLoading(true)
+
+    try {
+      const apiResponse = await fetch(path)
+      const data = await apiResponse.json()
+
+      setResponse({
+        status: `${apiResponse.status} ${apiResponse.statusText}`,
+        body: JSON.stringify(data, null, 2),
+      })
+    } catch (error) {
+      setResponse({
+        status: 'Error de conexion',
+        body:
+          'No se pudo contactar al proxy. Revisar que el servidor este corriendo con npm run dev dentro de server.',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <main className="app-shell">
+      <section className="intro">
+        <p className="eyebrow">React + Express + SQL Server</p>
+        <h1>Demo de proxy para la exposicion</h1>
+        <p className="summary">
+          El navegador llama a <code>/api</code>, Vite lo manda al backend y el
+          backend queda preparado para consultar SQL Server con <code>mssql</code>.
+        </p>
+      </section>
+
+      <section className="flow" aria-label="Flujo de la aplicacion">
+        <div>
+          <span>1</span>
+          <strong>Cliente React</strong>
+          <p>Hace fetch a una ruta interna.</p>
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+          <span>2</span>
+          <strong>Proxy backend</strong>
+          <p>Express recibe la llamada en /api.</p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div>
+          <span>3</span>
+          <strong>SQL Server</strong>
+          <p>La consulta queda aislada del navegador.</p>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <section className="tester">
+        <div className="actions">
+          <button type="button" onClick={() => callProxy('/api/health')}>
+            Probar proxy
+          </button>
+          <button type="button" onClick={() => callProxy('/api/alumnos')}>
+            Probar SQL Server
+          </button>
+        </div>
+
+        <div className="response">
+          <div className="response-header">
+            <span>Respuesta</span>
+            <strong>{loading ? 'Cargando...' : response.status}</strong>
+          </div>
+          <pre>{response.body}</pre>
+        </div>
+      </section>
+    </main>
   )
 }
 
