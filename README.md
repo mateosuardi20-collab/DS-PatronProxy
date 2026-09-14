@@ -1,87 +1,56 @@
-# TP diseño
+# Patrón Proxy — con y sin el patrón aplicado
 
-App chica para mostrar el uso de un proxy entre React, Express y SQL Server.
+Proyecto de consola en JavaScript (Node.js), sin servidor ni endpoints.
+Pensado para copiarse dentro de tu repo, al lado de `client/` y `server/`,
+sin tocarlas.
 
-## Idea del proyecto
+## Cómo integrarlo a tu repo
 
-El cliente React no se conecta directo a la base de datos. React llama a rutas
-`/api`, Vite redirige esas llamadas al backend, y el backend queda encargado de
-consultar SQL Server usando `mssql`.
-
-Flujo:
-
-```txt
-React -> proxy de Vite -> Express -> SQL Server
-```
-
-## Requisitos previos
-
-- Node.js 18 o superior
-- SQL Server, cuando se quiera conectar la base real
-
-## Instalacion
-
-Instalar dependencias del cliente:
+1. Copiá esta carpeta completa (`patrones/`) a la raíz de tu repositorio,
+   junto a `client/` y `server/`.
+2. Desde la raíz del repo (o desde `patrones/proxy/`), corré cada ejemplo
+   con Node — no hace falta instalar nada, son archivos `.js` planos:
 
 ```bash
-cd client
-npm install
+node patrones/proxy/sin-patron/MainSinPatron.js
+node patrones/proxy/con-patron/MainConPatron.js
 ```
 
-Instalar dependencias del servidor:
+3. Con `git add`, `git commit` y `git push` lo subís a GitHub como
+   cualquier otro cambio.
 
-```bash
-cd ../server
-npm install
+## Estructura
+
+```
+patrones/
+└── proxy/
+    ├── sin-patron/
+    │   ├── Usuario.js
+    │   ├── VideoHDService.js
+    │   └── MainSinPatron.js     <- ejecutable
+    └── con-patron/
+        ├── Usuario.js
+        ├── VideoHDService.js     (Sujeto Real)
+        ├── VideoProxy.js         (Proxy)
+        └── MainConPatron.js      <- ejecutable
 ```
 
-## Ejecutar la demo
+## Qué muestra cada versión
 
-En una terminal, iniciar el backend:
+**`sin-patron/`**: cada punto de la app que necesita un video (acá
+simulado con "Reproductor Móvil" y "Reproductor Web") tiene que
+reimplementar la lógica de límite de calidad y de caché por su cuenta.
+Esto expone tres problemas reales:
+- Código duplicado en cada lugar que use el servicio.
+- Los cachés no se comparten entre sí (el Reproductor Web vuelve a
+  descargar algo que el Móvil ya había descargado).
+- Es fácil que un desarrollador nuevo se olvide de aplicar la regla de
+  negocio — el último bloque del Main lo demuestra explícitamente.
 
-```bash
-cd server
-npm run dev
-```
-
-En otra terminal, iniciar React:
-
-```bash
-cd client
-npm run dev
-```
-
-Abrir la URL que muestre Vite, normalmente:
-
-```txt
-http://localhost:5173
-```
-
-## Configurar SQL Server mas adelante
-
-Cuando la base exista, crear un archivo `server/.env` usando como guia
-`server/.env.example`:
-
-```env
-PORT=3001
-
-DB_USER=tu_usuario
-DB_PASSWORD=tu_password
-DB_SERVER=localhost
-DB_DATABASE=nombre_de_tu_base
-DB_PORT=1433
-DB_ENCRYPT=false
-DB_TRUST_SERVER_CERTIFICATE=true
-```
-
-El endpoint preparado para la exposicion es:
-
-```txt
-GET /api/alumnos
-```
-
-La consulta de ejemplo espera una tabla `Alumnos` con las columnas:
-
-```sql
-id, nombre, curso
-```
+**`con-patron/`**: `VideoProxy` implementa el mismo método
+(`obtenerVideo(videoId, calidad)`) que `VideoHDService`, así que
+cualquier cliente puede usar uno u otro sin cambiar su código — esa es
+la transparencia que exige el patrón. El proxy centraliza el control de
+plan y el caché en un solo lugar, y el Main final demuestra la
+sustituibilidad pasando tanto el proxy como el servicio real a la misma
+función `reproducirVideo()`.
