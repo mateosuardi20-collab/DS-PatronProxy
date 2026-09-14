@@ -6,7 +6,7 @@
 // caché — simplemente piden un video llamando a obtenerVideo(), y
 // el Proxy se encarga de todo puertas adentro.
 
-const VideoHDService = require("./VideoHDService");
+const VideoService = require("./VideoService");
 const VideoProxy = require("./VideoProxy");
 const Usuario = require("./Usuario");
 
@@ -18,7 +18,7 @@ function reproducirVideo(servicio, videoId, calidad) {
 }
 
 function main() {
-  const servicioReal = new VideoHDService();
+  const servicioReal = new VideoService();
 
   const carlos = new Usuario("Carlos", "Estándar");
   const lucia = new Usuario("Lucía", "Premium");

@@ -12,11 +12,11 @@ patrones/
 └── proxy/
     ├── sin-patron/
     │   ├── Usuario.js
-    │   ├── VideoHDService.js
+    │   ├── VideoService.js
     │   └── MainSinPatron.js     <- ejecutable
     └── con-patron/
         ├── Usuario.js
-        ├── VideoHDService.js     (Sujeto Real)
+        ├── VideoService.js     (Sujeto Real)
         ├── VideoProxy.js         (Proxy)
         └── MainConPatron.js      <- ejecutable
 ```
@@ -34,7 +34,7 @@ Esto expone tres problemas reales:
   negocio — el último bloque del Main lo demuestra explícitamente.
 
 `con-patron: `VideoProxy` implementa el mismo método
-(`obtenerVideo(videoId, calidad)`) que `VideoHDService`, así que
+(`obtenerVideo(videoId, calidad)`) que `VideoService`, así que
 cualquier cliente puede usar uno u otro sin cambiar su código — esa es
 la transparencia que exige el patrón. El proxy centraliza el control de
 plan y el caché en un solo lugar, y el Main final demuestra la

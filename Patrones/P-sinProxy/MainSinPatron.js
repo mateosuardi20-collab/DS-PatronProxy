@@ -11,7 +11,7 @@
 // entre distintos puntos de la app, y es fácil que alguien se
 // olvide de aplicar la regla de negocio en algún lugar nuevo.
 
-const VideoHDService = require("./VideoHDService");
+const VideoService = require("./VideoService");
 const Usuario = require("./Usuario");
 
 // Esta función se tiene que copiar y pegar en cada lugar de la
@@ -31,13 +31,13 @@ function pedirVideoDuplicandoLogica(servicioReal, cache, videoId, usuario) {
   }
 
   console.log(`  CACHÉ MISS: pidiendo ${calidadPermitida} al CDN.`);
-  const video = servicioReal.descargarVideo(videoId, calidadPermitida);
+  const video = servicioReal.obtenerVideo(videoId, calidadPermitida);
   cache.set(cacheKey, video);
   return video;
 }
 
 function main() {
-  const servicioReal = new VideoHDService();
+  const servicioReal = new VideoService();
 
   const carlos = new Usuario("Carlos", "Estándar");
   const lucia = new Usuario("Lucía", "Premium");
@@ -60,7 +60,7 @@ function main() {
   // y se olvida de aplicar el límite de calidad, el usuario Estándar
   // termina accediendo a 4K sin que nadie lo controle.
   console.log("  [Pantalla nueva] Pide video directo, sin control de plan:");
-  servicioReal.descargarVideo("pelicula-99", "4K (UHD)");
+  servicioReal.obtenerVideo("pelicula-99", "4K (UHD)");
   console.log(
     `  -> ${carlos.nombre} (plan ${carlos.plan}) accedió a 4K aunque su plan no lo permite. Nadie se lo impidió.`
   );
