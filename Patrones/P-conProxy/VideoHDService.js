@@ -3,7 +3,7 @@
 // en cómo el cliente lo usa.
 class VideoHDService {
   descargarVideo(videoId, calidad) {
-    console.log(`  [CDN Remota] 🌐 Descargando "${videoId}" en ${calidad}...`);
+    console.log(`  [CDN Remota] Descargando "${videoId}" en ${calidad}...`);
     return `Contenido_${videoId}_${calidad}.mp4`;
   }
 }
