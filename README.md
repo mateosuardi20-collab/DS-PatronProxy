@@ -1,8 +1,8 @@
 # Patrón Proxy — con y sin el patrón aplicado
 
 ```bash
-node patrones/proxy/sin-patron/MainSinPatron.js
-node patrones/proxy/con-patron/MainConPatron.js
+node Patrones/P-sinProxy/MainSinPatron.js
+node Patrones/P-conProxy/MainConPatron.js
 ```
 
 ## Estructura
