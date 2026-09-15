@@ -32,7 +32,7 @@ function pedirVideoDuplicandoLogica(servicioReal, cache, videoId, usuario) {
   const cacheKey = `${videoId}_${calidadPermitida}`;
 
   if (cache.has(cacheKey)) {
-    console.log(`  Ya tenía ${calidadPermitida} en caché, así que lo reutilizo.`);
+    console.log(` Ya tenía ${calidadPermitida} en caché, así que lo reutilizo.`);
     return cache.get(cacheKey);
   }
 
@@ -61,14 +61,14 @@ function main() {
   const cacheWeb = new Map();
   pedirVideoDuplicandoLogica(servicioReal, cacheWeb, "pelicula-99", mateo);
 
-  console.log("\nUn desarrollador nuevo agrega otra pantalla");
-  // Y ACÁ está el riesgo real: si alguien agrega un tercer punto de acceso
+  console.log("\n Un desarrollador nuevo agrega otra pantalla");
+  // Y acá está el riesgo real: si alguien agrega un tercer punto de acceso
   // y se olvida de aplicar el límite de calidad, el usuario Estándar
   // termina accediendo a 4K sin que nadie lo controle.
   console.log("  [Pantalla nueva] Pide el video directo, sin revisar el plan:");
   servicioReal.obtenerVideo("pelicula-99", "4K (UHD)");
   console.log(
-    `  -> ${carlos.nombre} (plan ${carlos.plan}) accedió a 4K aunque su plan no lo permite. Nadie se lo impidió.`
+    `${carlos.nombre} (plan ${carlos.plan}) accedió a 4K aunque su plan no lo permite. Nadie se lo impidió.`
   );
 }
 

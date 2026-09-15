@@ -8,22 +8,21 @@ node patrones/proxy/con-patron/MainConPatron.js
 ## Estructura
 
 ```
-patrones/
-└── proxy/
-    ├── sin-patron/
+Patrones/
+    ├── P-sinPatron/
     │   ├── Usuario.js
     │   ├── VideoService.js
     │   └── MainSinPatron.js     <- ejecutable
-    └── con-patron/
+    └── P-conPatron/
         ├── Usuario.js
         ├── VideoService.js     (Sujeto Real)
         ├── VideoProxy.js         (Proxy)
         └── MainConPatron.js      <- ejecutable
 ```
 
-## Qué muestra cada versión
+## ¿Qué muestra cada versión?
 
-`sin-patron/`: cada punto de la app que necesita un video (acá
+`Sin patrón`: cada punto de la app que necesita un video (acá
 simulado con "Reproductor Móvil" y "Reproductor Web") tiene que
 reimplementar la lógica de límite de calidad y de caché por su cuenta.
 Esto expone tres problemas reales:
@@ -33,7 +32,7 @@ Esto expone tres problemas reales:
 - Es fácil que un desarrollador nuevo se olvide de aplicar la regla de
   negocio — el último bloque del Main lo demuestra explícitamente.
 
-`con-patron: `VideoProxy` implementa el mismo método
+`Con patrón `: VideoProxy implementa el mismo método
 (`obtenerVideo(videoId, calidad)`) que `VideoService`, así que
 cualquier cliente puede usar uno u otro sin cambiar su código — esa es
 la transparencia que exige el patrón. El proxy centraliza el control de

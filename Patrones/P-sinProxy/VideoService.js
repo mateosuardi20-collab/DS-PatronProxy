@@ -5,7 +5,7 @@
 // en cómo el cliente lo usa en la versión sin proxy.
 class VideoService {
   obtenerVideo(videoId, calidad) {
-    console.log(`  [CDN Remota] Descargando "${videoId}" en ${calidad}...`);
+    console.log(` [CDN Remota] Descargando "${videoId}" en ${calidad}...`);
     return `Contenido_${videoId}_${calidad}.mp4`;
   }
 }

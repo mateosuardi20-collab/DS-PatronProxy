@@ -44,7 +44,7 @@ class VideoProxy {
   // Misma firma que VideoService.obtenerVideo(videoId, calidad).
   // Este método es el punto de entrada del Proxy para cualquier cliente.
   obtenerVideo(videoId, calidadSolicitada) {
-    const calidad = this._limitarSegunPlan(calidadSolicitada);
+    const calidad = this.LimitarSegunPlan(calidadSolicitada);
     const etiqueta = ETIQUETAS[calidad];
 
     console.log(`\n[Proxy] ${this.usuario.nombre} pidió "${videoId}" (${this.usuario.plan}).`);
@@ -62,7 +62,7 @@ class VideoProxy {
     return video;
   }
 
-  _limitarSegunPlan(calidadSolicitada) {
+  LimitarSegunPlan(calidadSolicitada) {
     const maxPermitida = LIMITE_POR_PLAN[this.usuario.plan] ?? "720p";
     const idxSolicitada = ORDEN_CALIDADES.indexOf(calidadSolicitada);
     const idxMax = ORDEN_CALIDADES.indexOf(maxPermitida);

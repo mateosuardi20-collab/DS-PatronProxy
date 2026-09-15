@@ -58,7 +58,7 @@ function main() {
   console.log("\n=== Mostrando que el proxy es transparente ===");
   console.log("Probando con el proxy de Carlos:");
   reproducirVideo(proxyDeCarlos, "pelicula-99", "4K");
-  console.log("\nProbando con el servicio real directo, sin protección:");
+  console.log("\n Probando con el servicio real directo, sin protección:");
   reproducirVideo(servicioReal, "pelicula-99", "4K");
 }
 
