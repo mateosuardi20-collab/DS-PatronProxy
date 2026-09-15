@@ -1,6 +1,8 @@
-// El "objeto real" que descarga el video desde un CDN remoto.
-// Es idéntico en ambas versiones: el problema NO está acá, sino
-// en cómo el cliente lo usa.
+// Este archivo representa el servicio real o "sujeto real".
+//
+// Es el componente que realmente ejecuta la descarga del video desde
+// un CDN remoto. El problema no está en este servicio en sí, sino
+// en cómo el cliente lo usa en la versión sin proxy.
 class VideoService {
   obtenerVideo(videoId, calidad) {
     console.log(`  [CDN Remota] Descargando "${videoId}" en ${calidad}...`);

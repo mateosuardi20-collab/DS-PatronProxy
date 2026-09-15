@@ -1,10 +1,20 @@
 // ============================================================
 // VERSIÓN CON EL PATRÓN PROXY
 // ============================================================
-// Compará este Main con MainSinPatron.js: acá el "Reproductor Móvil"
-// y el "Reproductor Web" NO necesitan saber nada sobre planes ni
-// caché — simplemente piden un video llamando a obtenerVideo(), y
-// el Proxy se encarga de todo puertas adentro.
+// Este archivo es el punto de entrada de la versión con proxy.
+//
+// En esta versión, el cliente NO tiene que hacer la lógica de:
+//   - limitar la calidad según el plan del usuario
+//   - manejar caché
+//   - decidir si el video ya fue descargado antes
+//
+// En cambio, el cliente usa un Proxy que se encarga de esas tareas
+// y expone la misma interfaz que el servicio real:
+//   obtenerVideo(videoId, calidad)
+//
+// Esto permite que el "Reproductor Móvil" y el "Reproductor Web"
+// usen el mismo método sin saber si están hablando con el Proxy o
+// con el servicio real.
 
 const VideoService = require("./VideoService");
 const VideoProxy = require("./VideoProxy");
@@ -33,22 +43,22 @@ function main() {
   const proxyDeLucia = new VideoProxy(servicioReal, lucia, cacheCompartida);
   const proxyDeMateo = new VideoProxy(servicioReal, mateo, cacheCompartida);
 
-  console.log("=== Reproductor Móvil ===");
+  console.log("Reproductor móvil");
   // Carlos (Estándar) pide 4K, pero su plan lo limita a 1080p.
   proxyDeCarlos.obtenerVideo("pelicula-99", "4K");
   // Lucía (Premium) pide 4K. Su plan sí lo permite y no está en caché: se descarga.
   proxyDeLucia.obtenerVideo("pelicula-99", "4K");
 
-  console.log("\n=== Reproductor Web ===");
+  console.log("\nReproductor web");
   // Mateo (Estándar) pide 1080p directamente. Fijate que reutiliza EXACTAMENTE
   // el mismo método que usó el reproductor móvil: obtenerVideo(videoId, calidad).
   // No tuvo que reimplementar ninguna regla de negocio.
   proxyDeMateo.obtenerVideo("pelicula-99", "1080p");
 
-  console.log("\n=== Demostrando la transparencia del Proxy ===");
+  console.log("\n=== Mostrando que el proxy es transparente ===");
   console.log("Probando con el proxy de Carlos:");
   reproducirVideo(proxyDeCarlos, "pelicula-99", "4K");
-  console.log("\nProbando con el servicio real directo (sin protección):");
+  console.log("\nProbando con el servicio real directo, sin protección:");
   reproducirVideo(servicioReal, "pelicula-99", "4K");
 }
 
