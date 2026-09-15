@@ -9,16 +9,20 @@ node patrones/proxy/con-patron/MainConPatron.js
 
 ```
 Patrones/
-    ├── P-sinPatron/
-    │   ├── Usuario.js
-    │   ├── VideoService.js
-    │   └── MainSinPatron.js     <- ejecutable
-    └── P-conPatron/
-        ├── Usuario.js
-        ├── VideoService.js     (Sujeto Real)
-        ├── VideoProxy.js         (Proxy)
-        └── MainConPatron.js      <- ejecutable
+├── P-sinProxy/
+│    ├── Usuario.js
+│    ├── Video.js
+│    ├── VideoService.js
+│    └── MainSinPatron.js <- ejecutable
+|
+└── P-conProxy/
+    ├── Usuario.js
+    ├── Video.js
+    ├── VideoService.js (Sujeto Real)
+    ├── VideoProxy.js (Proxy)
+    └── MainConPatron.js <- ejecutable
 ```
+
 
 ## ¿Qué muestra cada versión?
 
@@ -32,10 +36,14 @@ Esto expone tres problemas reales:
 - Es fácil que un desarrollador nuevo se olvide de aplicar la regla de
   negocio — el último bloque del Main lo demuestra explícitamente.
 
-`Con patrón `: VideoProxy implementa el mismo método
+`Con patrón`: `VideoProxy` implementa el mismo método
 (`obtenerVideo(videoId, calidad)`) que `VideoService`, así que
 cualquier cliente puede usar uno u otro sin cambiar su código — esa es
 la transparencia que exige el patrón. El proxy centraliza el control de
 plan y el caché en un solo lugar, y el Main final demuestra la
 sustituibilidad pasando tanto el proxy como el servicio real a la misma
 función `reproducirVideo()`.
+
+`Video.js` representa el video como un objeto con su identificador, calidad
+y contenido. `VideoService` crea y devuelve estos objetos, mientras que el
+proxy los guarda en la caché para reutilizarlos.

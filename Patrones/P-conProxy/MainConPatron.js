@@ -23,8 +23,8 @@ const Usuario = require("./Usuario");
 // Este método no sabe (ni le importa) si recibe el Proxy o el objeto
 // real: a ambos les puede llamar .obtenerVideo(videoId, calidad).
 function reproducirVideo(servicio, videoId, calidad) {
-  const archivo = servicio.obtenerVideo(videoId, calidad);
-  console.log(`  -> Reproduciendo archivo: ${archivo}`);
+  const video = servicio.obtenerVideo(videoId, calidad);
+  console.log(`  -> Reproduciendo archivo: ${video.contenido}`);
 }
 
 function main() {

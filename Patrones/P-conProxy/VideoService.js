@@ -7,10 +7,16 @@
 // En la versión sin proxy, cada cliente tiene que repetir reglas de
 // negocio y caché. En la versión con proxy, el cliente usa una
 // interfaz común y delega esa lógica al Proxy.
+const Video = require("./Video");
+
 class VideoService {
   obtenerVideo(videoId, calidad) {
     console.log(`  [CDN Remota] Descargando "${videoId}" en ${calidad}...`);
-    return `Contenido_${videoId}_${calidad}.mp4`;
+    return new Video(
+      videoId,
+      calidad,
+      `Contenido_${videoId}_${calidad}.mp4`
+    );
   }
 }
 
